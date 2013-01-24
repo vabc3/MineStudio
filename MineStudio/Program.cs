@@ -13,7 +13,7 @@ namespace MineStudio
 
         static void Main(string[] args)
         {
-            MineTable mt=new MineTable(4);
+            MineTable mt=new MineTable(9,9,10);
             System.Console.WriteLine(mt);
 
             System.Console.WriteLine("Miner!");
