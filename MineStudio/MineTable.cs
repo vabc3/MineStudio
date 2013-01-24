@@ -14,7 +14,8 @@ namespace MineStudio
 
 
         public int Height { get; set; }
-         //Width, MineCount;
+        public int Width { get; set; }
+        public int MineCount { get; set; }
 
         public override string ToString()
         {
