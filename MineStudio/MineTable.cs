@@ -5,10 +5,15 @@ using System.Text;
 
 namespace MineStudio
 {
+    enum MineStatus
+    {
+        UNKNOW,NOMINE,MINE
+    }
+
     class MineTable
     {
-        static readonly int UNKNOW = -2;
-        static readonly int ISMINE = -1;
+        private static readonly int UNKNOW = -2;
+        private static readonly int ISMINE = -1;
 
         public MineTable(int Height, int Width, int MineCount)
         {
