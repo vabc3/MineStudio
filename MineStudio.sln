@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineStudio", "MineStudio\MineStudio.csproj", "{D1B3435E-C783-4EAB-ACC7-0AA33E061F08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineStudioBase", "MineStudioBase\MineStudioBase.csproj", "{D1B3435E-C783-4EAB-ACC7-0AA33E061F08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineStudioGUI", "MineStudioGUI\MineStudioGUI.csproj", "{00E896BB-2E2E-4BF0-80AD-914A612FE0C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTest", "WpfTest\WpfTest.csproj", "{0E29FAB4-8D79-450C-8840-E899A996E174}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +17,14 @@ Global
 		{D1B3435E-C783-4EAB-ACC7-0AA33E061F08}.Debug|x86.Build.0 = Debug|x86
 		{D1B3435E-C783-4EAB-ACC7-0AA33E061F08}.Release|x86.ActiveCfg = Release|x86
 		{D1B3435E-C783-4EAB-ACC7-0AA33E061F08}.Release|x86.Build.0 = Release|x86
+		{00E896BB-2E2E-4BF0-80AD-914A612FE0C5}.Debug|x86.ActiveCfg = Debug|x86
+		{00E896BB-2E2E-4BF0-80AD-914A612FE0C5}.Debug|x86.Build.0 = Debug|x86
+		{00E896BB-2E2E-4BF0-80AD-914A612FE0C5}.Release|x86.ActiveCfg = Release|x86
+		{00E896BB-2E2E-4BF0-80AD-914A612FE0C5}.Release|x86.Build.0 = Release|x86
+		{0E29FAB4-8D79-450C-8840-E899A996E174}.Debug|x86.ActiveCfg = Debug|x86
+		{0E29FAB4-8D79-450C-8840-E899A996E174}.Debug|x86.Build.0 = Debug|x86
+		{0E29FAB4-8D79-450C-8840-E899A996E174}.Release|x86.ActiveCfg = Release|x86
+		{0E29FAB4-8D79-450C-8840-E899A996E174}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
