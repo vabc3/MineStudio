@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Media.Animation;
+using System.ComponentModel;
 
 namespace MineStudio.GUI
 {
@@ -20,37 +10,79 @@ namespace MineStudio.GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Person> lp=new List<Person>{
-                                new Person("fd",4),
-                                new Person("fr",5)
-                            };
         public MainWindow()
         {
             InitializeComponent();
-
-            
-            dataGrid1.ItemsSource=lp;
         }
 
-     
-        private void buttonExit_Click(object sender, RoutedEventArgs e)
+
+        private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
 
             Application.Current.Shutdown();
         }
+
+        private void ButtonRandom_Click(object sender, RoutedEventArgs e)
+        {
+            MineTable mt=new MineTable(9, 9, 10);
+            Console.WriteLine(Properties.Resources.MainWindow_ButtonRandom_Click_Miner_);
+            mt.SetStatus(2, 0, MineStatus.ISMINE);
+            mt.SetStatus(4, 0, MineStatus.ISMINE);
+            mt.SetStatus(5, 0, MineStatus.ISMINE);
+            mt.SetStatus(7, 0, MineStatus.ISMINE);
+            mt.SetStatus(3, 1, MineStatus.ISMINE);
+            mt.SetStatus(5, 2, MineStatus.ISMINE);
+            mt.SetStatus(5, 3, MineStatus.ISMINE);
+            mt.SetStatus(8, 4, MineStatus.ISMINE);
+            mt.SetStatus(0, 6, MineStatus.ISMINE);
+            mt.SetStatus(4, 8, MineStatus.ISMINE);
+            mt.Show();
+            mt.Conduce();
+
+            int[,] TABLE = mt.Table;
+            DataTable dt = new DataTable();
+            for (int i = 0; i < TABLE.GetLength(1); i++)
+                dt.Columns.Add(i.ToString(), typeof(int));
+            for (int i = 0; i < TABLE.GetLength(0); i++)
+            {
+                DataRow dr = dt.NewRow();
+                for (int j = 0; j < TABLE.GetLength(1); j++)
+                    dr[j] = TABLE[i, j];
+                dt.Rows.Add(dr);
+            }
+
+            
+            DataGrid1.ColumnWidth = 40;
+            DataGrid1.RowHeight   = 40;
+            //DataGrid1.ItemsSource = dt.AsDataView();
+
+            customerList = new BindingList<DemoCustomer>();
+            customerList.Add(new DemoCustomer());
+            customerList.Add(new DemoCustomer());
+            customerList.Add(new DemoCustomer());
+            DataGrid1.ItemsSource = customerList;
+
+        }
+
+        private BindingList<DemoCustomer> customerList;
+
+        private void ButtonUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            int a = 2;
+        }
     }
-}
 
-
-class Person
-{
-
-    public Person(string p, int p_2)
+    public class DemoCustomer
     {
-        // TODO: Complete member initialization
-        this.Name = p;
-        this.Age = p_2;
+        public Guid Guid { get; set; }
+        public string CustomerName { get; set; }
+        public string PhoneNumber { get; set; }
+        public DemoCustomer()
+        {
+            Guid = Guid.NewGuid();
+            CustomerName = "中";
+            PhoneNumber = "(312)555-0100";
+        }
     }
-    public string Name { get; set; }
-    public int  Age { get; set; }
 }
+

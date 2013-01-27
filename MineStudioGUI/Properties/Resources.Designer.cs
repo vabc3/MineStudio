@@ -59,5 +59,14 @@ namespace MineStudio.GUI.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Miner! 的本地化字符串。
+        /// </summary>
+        internal static string MainWindow_ButtonRandom_Click_Miner_ {
+            get {
+                return ResourceManager.GetString("MainWindow_ButtonRandom_Click_Miner_", resourceCulture);
+            }
+        }
     }
 }

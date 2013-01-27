@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MineStudio
 {
-    enum MineStatus
+    public enum MineStatus
     {
         ILLEGAL, UNKNOW, NOMINE, ISMINE
     }
 
-    class MineTable
+    public class MineTable
     {
+
         private static readonly int UNKNOW = -2;
         private static readonly int ISMINE = -1;
-        private int[,]  Table;
+        public int[,]  Table;
         private int Current;
         public int Height { get; set; }
         public int Width { get; set; }
@@ -33,12 +31,12 @@ namespace MineStudio
                     this.Table[i, j]=UNKNOW;
         }
 
-        public MineStatus SetStatus(int x, int y, MineStatus Status, int Num=-1)
+        public MineStatus SetStatus(int x, int y, MineStatus status, int Num=-1)
         {
             if ((x<0 || x>=Width || y<0 || y>=Height || UNKNOW!=Table[y, x]))
                 return MineStatus.ILLEGAL;
-            MineStatus rt=Status;
-            switch (Status)
+            MineStatus rt=status;
+            switch (status)
             {
                 case MineStatus.NOMINE:
                     if (Num>=0 && Num<=8)
@@ -52,8 +50,6 @@ namespace MineStudio
                         Table[y, x]     = ISMINE;
                         Current++;
                     }
-                    break;
-                default:
                     break;
             }
             return rt;
