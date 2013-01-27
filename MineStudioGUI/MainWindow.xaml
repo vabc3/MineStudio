@@ -1,10 +1,26 @@
-﻿<Window x:Class="MineStudioGUI.MainWindow"
+﻿<Window x:Class="MineStudio.GUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MineStudio" Height="350" Width="525" 
+        MinHeight="350" MinWidth="450">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Name="button1" VerticalAlignment="Top" Click="button1_Click" HorizontalContentAlignment="Center" Width="100" />
-        <Label Content="Label" Height="58" HorizontalAlignment="Left" Margin="175,156,0,0" Name="label1" VerticalAlignment="Top" Width="98" Background="#FF16F016" />
-        <Button Content="Button" Height="23" HorizontalAlignment="Left" Margin="131,0,0,0" Name="button2" VerticalAlignment="Top" Width="75" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="150" />
+        </Grid.ColumnDefinitions>
+        <DataGrid Name="dataGrid1" Grid.Column="0" AutoGenerateColumns="True"                 />
+        <StackPanel Grid.Column="1" Background="Gray">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Height" Value="40"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button Name="buttonRandom" Content="随机"/>
+            <Button Name="buttonLoad" Content="载入" />
+            <Button Name="buttonDeduce" Content="推导" />
+            <Button Name="buttonUpdate" Content="显示更新" />
+            <Button Name="buttonExit" Content="退出" Click="buttonExit_Click" />
+        </StackPanel>
+
     </Grid>
 </Window>

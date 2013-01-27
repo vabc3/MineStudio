@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace MineStudioGUI
+namespace MineStudio.GUI
 {
     /// <summary>
     /// App.xaml 的交互逻辑
