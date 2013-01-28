@@ -23,7 +23,16 @@ namespace MineStudio
 
         public readonly int X;
         public readonly int Y;
-        public int N { get; set; }
+
+        private int _N;
+        public int N { 
+            get { return _N; }
+            set {
+                _N = value;
+                OnPropertyChanged("N");
+                Status = CellStatus.Ground;
+            }
+        }
 
         public string Location
         {
@@ -54,7 +63,7 @@ namespace MineStudio
             set { 
                 _status = value;
                 CleanPred();
-                OnPropertyChanged("CellStatus");
+                OnPropertyChanged("Status");
             }
         }
 

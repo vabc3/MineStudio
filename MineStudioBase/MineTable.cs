@@ -33,12 +33,12 @@ namespace MineStudio
                 it.NearCells=(from a in _dir where IndexValid(it.X+a[0], it.Y+a[1]) select Table[GetIndex(it.X+a[0], it.Y+a[1])]).ToList();
         }
 
-        private bool IndexValid(int x, int y)
+        public bool IndexValid(int x, int y)
         {
             return (x >= 0 && x < Width && y >= 0 && y < Height);
         }
 
-        private int GetIndex(int x, int y)
+        public int GetIndex(int x, int y)
         {
             return y * Width+x;
         }

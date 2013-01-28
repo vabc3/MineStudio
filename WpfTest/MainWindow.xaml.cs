@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace WpfTest
 {
@@ -16,38 +16,59 @@ namespace WpfTest
             InitializeComponent();
         }
 
+        private bool Near(Color a, Color b)
+        {
+            int gap = 11;
+            return (Math.Abs(a.R - b.R) < gap && Math.Abs(a.G - b.G) < gap && Math.Abs(a.B - b.B) < gap);
+
+        }
+
+        private bool isSep(Color c)
+        {
+            return (c.R + c.G + c.B < 11);
+        }
+
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            Person person = (Person)this.FindResource("zy2");
+            //BitmapImage bi = new BitmapImage(new Uri(new FileInfo("./tbc.bmp").FullName));
+            //Image1.Source=bi;
 
-            MessageBox.Show(string.Format("I am {0},Age is {1}", person.Name, person.Age.ToString()));
-        }
-    }
+            Bitmap a = new Bitmap("tbc.bmp");
+            //Bitmap b = a.Clone(new Rectangle(320, 80, 300, 100), PixelFormat.Format32bppArgb);
+            //b.Save("2.bmp");
+            int width = a.Width;
+            int height = a.Height;
+            int top = 0;
+            Color c;
+            int old_top=0;
+            Color old_c=Color.Wheat;
 
-    public class Person
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
-
-
-    public class MyValidation : ValidationRule
-    {
-        public int min { get; set; }
-        public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
-        {
-
-            int c;
-
-            if (!int.TryParse((string)value, out c))
+            do
             {
-                return new ValidationResult(false, "Not num");
-            }
-
-            if (c<min)
-                return new ValidationResult(false, String.Format("{0}<{1}", c, min));
-            return new ValidationResult(true, null);
-
+                top++;
+                c = a.GetPixel(width/2-31, top);
+                a.SetPixel(width/2 - 31, top, Color.Yellow);
+                if (Near(old_c,c))
+                {
+                    old_c=c;
+                }
+                else{
+                    //Console.WriteLine("{0}:{1}",top-old_top,old_c);
+                    if(isSep(old_c)) {
+                        Console.WriteLine(top);
+                        a.SetPixel(width/2 - 30, top, Color.Red);
+                    }
+                    old_top=top;
+                    old_c=c;
+                }
+                
+            } while (c != Color.Black && top < height-1);
+            Console.WriteLine(top);
+            a.Save("Due.bmp");
         }
+
+       
     }
+
+    
 }

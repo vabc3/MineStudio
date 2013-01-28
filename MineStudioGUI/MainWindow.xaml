@@ -9,13 +9,16 @@
             <ColumnDefinition Width="150" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="60*"/>
         </Grid.RowDefinitions>
 
         <DataGrid Name="DataGrid1" Grid.Column="0" 
                   AutoGenerateColumns="True" HeadersVisibility="All"
-                  CanUserSortColumns="False">
+                  CanUserSortColumns="False"
+                  CanUserReorderColumns="False" SelectionChanged="DataGrid1_SelectionChanged"
+                  SelectionUnit="FullRow" SelectionMode="Single"
+                  >
             <!--<DataGrid.Columns >
                 <DataGridTextColumn Header="坐标" Binding="{Binding Path=Location}" Width="20*"/>
                 <DataGridTextColumn Header="数值" Binding="{Binding Path=N}" Width="30*"/>
@@ -40,6 +43,7 @@
             <Button Name="ButtonStat"   Content="统计" Click="ButtonStat_Click" />
             <Button Name="ButtonDeduce" Content="推导" Click="ButtonDeduce_Click" />
             <Button Name="ButtonUpdate" Content="显示更新" Click="ButtonUpdate_Click" />
+            <Button Name="ButtonTest" Content="测试" Click="ButtonTest_Click" />
             <Button Name="ButtonExit"   Content="退出" Click="ButtonExit_Click" />
         </StackPanel>
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -47,15 +51,7 @@
                 <ColumnDefinition Width="50*"/>
                 <ColumnDefinition Width="50*"/>
             </Grid.ColumnDefinitions>
-            <Canvas Name="Canvas1"  Grid.Column="0" Background="#FFC1C4BF" >
-                <Rectangle Canvas.Left="40" Canvas.Top="31" Width="63" Height="41" Fill="Blue"  />
-                <Ellipse Canvas.Left="130" Canvas.Top="79" Width="58" Height="58" Fill="Blue"  />
-                <Path Canvas.Left="61" Canvas.Top="28" Width="133" Height="98" Fill="Blue" 
-          Stretch="Fill" Data="M61,125 L193,28"/>
-                <Ellipse Fill="Green" Width="60" Height="60" Canvas.Left="30" Canvas.Top="20"    
-             Canvas.ZIndex="1"/>
-                <Ellipse Fill="Blue"  Width="60" Height="60" Canvas.Left="60" Canvas.Top="40"/>
-            </Canvas>
+            <Canvas Name="Canvas1"  Grid.Column="0" Background="#FFC1C4BF" SizeChanged="Canvas1_SizeChanged" MouseDown="Canvas1_MouseDown" />
             <GridSplitter Width="6" Grid.Column="0" />
             <Image Name="Image1" Grid.Column="1" Source="/MineStudioGUI;component/Images/Run.png" MouseDown="Image1_MouseDown" />
         </Grid>
