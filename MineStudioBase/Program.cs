@@ -1,12 +1,24 @@
 ﻿using System;
+using System.Drawing;
 
 namespace MineStudio
 {
     class Program
     {
+
+        private const String prefix = @"..\..\..\MineStudioTest\ImageCases\";
         static void Main(string[] args)
         {
-            MineTable mt=new MineTable(9,9,10);
+            W7MineIdentifier target = new W7MineIdentifier();
+            Bitmap data = new Bitmap(prefix+"Table3.png");
+            int width,height;
+            bool actual = target.GetTableInfo(data, out width, out height);
+            Console.WriteLine(height);
+        }
+
+        private static void T1()
+        {
+            MineTable mt = new MineTable(9, 9, 10);
             Console.WriteLine(mt);
             Console.WriteLine("Miner!");
             mt.SetStatus(2, 0, CellStatus.Mine);
