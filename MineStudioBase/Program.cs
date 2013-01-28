@@ -20,7 +20,7 @@ namespace MineStudio
             mt.SetStatus(0, 6, CellStatus.Mine);
             mt.SetStatus(4, 8, CellStatus.Mine);
             mt.Show();
-            mt.Conduce();
+            mt.Deduce();
             mt.Show();
         }
     }

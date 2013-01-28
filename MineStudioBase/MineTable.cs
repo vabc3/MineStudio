@@ -1,78 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.ComponentModel;
 
 namespace MineStudio
 {
-    public enum CellStatus
-    {
-        Unknow, Mine, Ground
-    }
-
-    public class MineCell : INotifyPropertyChanged
-    {
-        public MineCell(int x, int y)
-        {
-            X           = x;
-            Y           = y;
-            MineCount   = -1;
-            UnknowCount = -1;
-            Covered     = true;
-            Status      = CellStatus.Unknow;
-        }
-
-        public readonly int X;
-        public readonly int Y;
-        private int _mineCount;
-
-        /// <summary>
-        /// Number Of Mines Near
-        /// </summary>
-        public int MineCount
-        {
-            get { return _mineCount; }
-            set { _mineCount = value;
-            OnPropertyChanged();
-            }
-        }
-
-        public int UnknowCount { get; set; }
-        public bool Covered { get; private set; }
-        public CellStatus Status { get; private set; }
-        public IEnumerable<MineCell> NearCells { get; set; }
-
-        public bool SetStatusMine()
-        {
-            Status  = CellStatus.Mine;
-            Covered = false;
-            return true;
-        }
-
-        public bool SetStatusGround(int num=-1)
-        {
-            if (num >= -1 && num < 9)
-            {
-                Status = CellStatus.Ground;
-                if (num != -1)
-                {
-                    MineCount       = num;
-                    Covered = false;
-                }
-                return true;
-            }
-            return false;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName="")
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-            Console.WriteLine("Debug!!!");
-        }
-    }
+  
 
     public class MineTable
     {
@@ -81,6 +12,12 @@ namespace MineStudio
         public readonly int MineCount;
         public int Current { get; private set; }
         public MineCell[] Table { get; private set; }
+
+        private readonly int[][] _dir=
+        {
+          new[]{1,0},new[]{1,1},new[]{0,1},new[]{-1,1},
+          new[]{-1,0},new[]{-1,-1},new[]{0,-1},new[]{1,-1}
+        };
 
         public MineTable(int height, int width, int mineCount)
         {
@@ -93,7 +30,7 @@ namespace MineStudio
                 for (var i = 0; i < Width; i++)
                     Table[GetIndex(i, j)] = new MineCell(i, j);
             foreach (var it in Table)
-                it.NearCells=(from a in dire where IndexValid(it.X+a[0], it.Y+a[1]) select Table[GetIndex(it.X+a[0], it.Y+a[1])]).ToList();
+                it.NearCells=(from a in _dir where IndexValid(it.X+a[0], it.Y+a[1]) select Table[GetIndex(it.X+a[0], it.Y+a[1])]).ToList();
         }
 
         private bool IndexValid(int x, int y)
@@ -158,22 +95,53 @@ namespace MineStudio
             }
         }
 
-        private readonly List<int[]> dire=new List<int[]> 
+        public void FullDe()
         {
-           new[]{1,0},new[]{1,1},new[]{0,1},new[]{-1,1},
-           new[]{-1,0},new[]{-1,-1},new[]{0,-1},new[]{1,-1}
-        };
-
-
-        public void Conduce()
-        {
-            UpdateCount();
             if (Current==MineCount)
             {
                 Console.WriteLine("Can !");
                 for (var i=0; i<Width*Height; i++)
                     if (CellStatus.Unknow==Table[i].Status)
+                    {
                         Table[i].SetStatusGround(Table[i].MineCount);
+                        Table[i].OnPropertyChanged();
+                    }
+            }
+        }
+
+        public void Deduce()
+        {
+            UpdateCount();
+            foreach (var item in Table)
+                item.CleanPred();
+            foreach (var item in Table)
+            {
+                if (CellStatus.Ground != item.Status || 0==item.UnknowCount)
+                    continue;
+
+                var unknows = from it in item.NearCells where it.Status==CellStatus.Unknow && it.PredStatus==CellStatus.Unknow select it;
+                if (item.N == item.MineCount)
+                {
+                    foreach (var it in unknows)
+                    {
+                        it.PredStatus = CellStatus.Ground;
+                        it.PredReason = string.Format("R1:Grid {0} has all mines found.",it.Location);
+                    }
+                }
+                else if (item.N > item.MineCount)
+                {
+                    var delta = item.N - item.MineCount;
+                    if (delta == item.UnknowCount)
+                    {
+                        foreach (var it in unknows)
+                        {
+                            it.PredStatus = CellStatus.Mine;
+                            it.PredReason = string.Format("R2:Grid {0} has only mines remain.",it.Location);
+                        }
+                    }
+                }
+                else
+                    throw new Exception("Illeage");
             }
         }
 
@@ -194,10 +162,8 @@ namespace MineStudio
                             Console.Write('M');
                             break;
                         case CellStatus.Ground:
-                            if (Table[idx].Covered)
-                                Console.Write("C");
-                            else
-                                Console.Write(Table[idx].MineCount);
+
+                            Console.Write(Table[idx].MineCount);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
