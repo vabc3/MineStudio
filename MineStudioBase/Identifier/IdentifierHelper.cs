@@ -1,22 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-
+using System.Linq;
 namespace MineStudio.Identifier
 {
     public static class IdentifierHelper
     {
-        private const int Gap = 30;
+
+        public static Color GetPixel(this Bitmap data, Point p)
+        {
+            return data.GetPixel(p.X, p.Y);
+        }
+
+        public static bool isSep(this Bitmap data,Point p)
+        {
+            Color lt = Color.FromArgb(22, 26, 36);
+            //33 40 43
+            return Color.Black.Near(data.GetPixel(p)) || lt.Near(data.GetPixel(p));
+        }
+
+        private const int Gap = 32;
         public static bool Near(this Color a, Color b)
         {
             //Console.WriteLine("Compare {0} with {1}", a, b);
 
-            return (Math.Abs(a.R - b.R) + Math.Abs(a.G - b.G) +Math.Abs(a.B - b.B) < Gap);
+            return (Math.Abs(a.R - b.R) + Math.Abs(a.G - b.G) +Math.Abs(a.B - b.B) <= Gap);
         }
 
         public static double Dist(this Point a, Point b)
         {
-            //TODO optimu for same X or same Y
+            if (a.X == b.X) return Math.Abs(a.Y - b.Y);
+            if (a.Y == b.Y) return Math.Abs(a.X - b.X);
             return Math.Sqrt(Math.Pow((a.X - b.X), 2) + Math.Pow((a.Y - b.Y), 2));
         }
 
@@ -82,10 +96,8 @@ namespace MineStudio.Identifier
                     if (t >= tolerance) {
                         u = m;
                         break;
-                    } else {
-
-                        t++;
                     }
+                    t++;
                 } else {
                     t = 0;
                     o = c;
@@ -96,18 +108,19 @@ namespace MineStudio.Identifier
             return u-1;
         }
 
-        private const int MinLineLen = 100;
+        private const int MinLineLen = 200;
+        private const int LineTolerance = 6;
         public static bool IsOnVerticalLine(this Bitmap data, Point p)
         {
             IList<Point> l1 = MakeLine(p, new Point(p.X, 0));
-            int d1=data.FindEndPoint(l1, 0);
+            int d1=data.FindEndPoint(l1, 0,LineTolerance);
             IList<Point> l2 = MakeLine(p, new Point(p.X, data.Height-1));
-            int d2=data.FindEndPoint(l2, 0);
+            int d2=data.FindEndPoint(l2, 0,LineTolerance);
             Console.WriteLine("len:{0}", l1[d1].Dist(l2[d2]));
             return (l1[d1].Dist(l2[d2]) > MinLineLen);
         }
 
-        private const int FeaturedTolerance = 2;
+        private const int FeaturedTolerance = 1;
         public static IList<Point> FindFeaturedPoints(this Bitmap data, IList<Point> list)
         {
             List<Point> l = new List<Point>();
@@ -122,6 +135,45 @@ namespace MineStudio.Identifier
             if (p == len - 1) l.Add(list[len-1]);
 
             return l;
+        }
+       
+        private static bool ValueNear(double a, double b, double per = .11)
+        {
+            return Math.Abs((a - b)/a) < per;
+        }
+
+        public static IList<Point> GetCord(this Bitmap data, IList<Point> list,double per=.5)
+        {
+            List<Point> cord=new List<Point>();
+            int len = list.Count;
+            if (len<=1) return cord;
+            List<double> li = new List<double>();
+            for (var i = 1; i < len; i++) 
+                li.Add(list[i].Dist(list[i-1]));
+
+            double ave = li.Average();
+            var l2=from item in li where ValueNear(ave,item) select item ;
+            if (l2.Count()<9) return cord;
+
+            ave = l2.Average();
+
+            for (var i = 0; i < len; i++) {
+                cord.Add(list[i]);
+                int p=i;
+                for (var j = i + 1; j < len; j++) {
+                    if (ValueNear(ave, list[j].Dist(list[p]))) {
+                        cord.Add(list[j]);
+                        p=j;
+                    }
+                }
+
+                if (cord.Count >= list.Count*per)
+                    break;
+                else
+                    cord.Clear();
+            }
+
+            return cord;
         }
     }
 }
