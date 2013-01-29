@@ -3,8 +3,6 @@ using System.Linq;
 
 namespace MineStudio
 {
-  
-
     public class MineTable
     {
         public readonly int Height;
@@ -13,13 +11,13 @@ namespace MineStudio
         public int Current { get; private set; }
         public MineCell[] Table { get; private set; }
 
-        private readonly int[][] _dir=
+        private readonly int[][] _directions=
         {
           new[]{1,0},new[]{1,1},new[]{0,1},new[]{-1,1},
           new[]{-1,0},new[]{-1,-1},new[]{0,-1},new[]{1,-1}
         };
 
-        public MineTable(int height, int width, int mineCount)
+        public MineTable(int height, int width, int mineCount=-1)
         {
             Height      = height;
             Width       = width;
@@ -30,7 +28,7 @@ namespace MineStudio
                 for (var i = 0; i < Width; i++)
                     Table[GetIndex(i, j)] = new MineCell(i, j);
             foreach (var it in Table)
-                it.NearCells=(from a in _dir where IndexValid(it.X+a[0], it.Y+a[1]) select Table[GetIndex(it.X+a[0], it.Y+a[1])]).ToList();
+                it.NearCells=(from a in _directions where IndexValid(it.X+a[0], it.Y+a[1]) select Table[GetIndex(it.X+a[0], it.Y+a[1])]).ToList();
         }
 
         public bool IndexValid(int x, int y)
@@ -54,10 +52,8 @@ namespace MineStudio
                     break;
                 case CellStatus.Mine:
                     return Table[index].SetStatusMine();
-                    break;
                 case CellStatus.Ground:
                     return Table[index].SetStatusGround(num);
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException("status");
             }
@@ -97,9 +93,9 @@ namespace MineStudio
 
         public void FullDe()
         {
+            UpdateCount();
             if (Current==MineCount)
             {
-                Console.WriteLine("Can !");
                 for (var i=0; i<Width*Height; i++)
                     if (CellStatus.Unknow==Table[i].Status)
                     {

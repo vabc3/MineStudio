@@ -15,6 +15,8 @@ using Point = System.Windows.Point;
 using Rectangle = System.Drawing.Rectangle;
 using System.Globalization;
 
+
+
 namespace MineStudio.GUI
 {
     /// <summary>
@@ -47,15 +49,10 @@ namespace MineStudio.GUI
 
         private void ButtonRandom_Click(object sender, RoutedEventArgs e)
         {
-            _mineTable = new MineTable(9, 9, 10);
-            Console.WriteLine(Properties.Resources.MainWindow_ButtonRandom_Click_Miner_);
-            _mineTable.SetStatus(0, 0, CellStatus.Ground, 1);
-            _mineTable.SetStatus(0, 1, CellStatus.Ground, 1);
-            _mineTable.SetStatus(1, 0, CellStatus.Ground, 1);
-            _mineTable.SetStatus(1, 1, CellStatus.Mine);
+            //TODO: Console.WriteLine(Properties.Resources.MainWindow_ButtonRandom_Click_Miner_);
+            _mineTable = MineFactory.CreateRandomTable(16,16,40);
             DataGrid1.ItemsSource = _mineTable.Table;
         }
-
 
 
         private void ButtonDeduce_Click(object sender, RoutedEventArgs e)
@@ -197,8 +194,6 @@ namespace MineStudio.GUI
                 };
             Canvas1.Children.Add(myPath);
 
-            Console.WriteLine("{0}/{1}", dh, _boardHeight);
-
             for (int i = 1; i < _mineTable.Height; i++)
             {
                 var myLineGeometry = new LineGeometry
@@ -262,7 +257,7 @@ namespace MineStudio.GUI
             CultureInfo.GetCultureInfo("en-us"),
             FlowDirection.LeftToRight,
             new Typeface("Verdana"),
-            32,
+            16,
             Brushes.Black);
             var tb = formattedText.BuildGeometry(new Point(px, py));
             var pa = new Path
@@ -329,6 +324,7 @@ namespace MineStudio.GUI
 
         private void Canvas1_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            Console.WriteLine("Canvas_sizeChange");
             _canvasHeight = Canvas1.ActualHeight;
             _canvasWidth = Canvas1.ActualWidth;
             Canvas_Update();
@@ -362,6 +358,11 @@ namespace MineStudio.GUI
                 Selected=null;
             }
 
+        }
+
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Console.WriteLine("Grid_sizeChange");
         }
 
     }

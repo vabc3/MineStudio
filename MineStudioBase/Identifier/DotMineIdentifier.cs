@@ -3,17 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace MineStudio
+namespace MineStudio.Identifier
 {
-    interface IMineIdentifier
+    public class DotMineIdentifier : IMineIdentifier
     {
-        bool GetTableInfo(Bitmap data, out int width, out int height);
-        bool GetCellInfo(Bitmap data, out CellStatus status, int n);
-    }
-
-    public class W7MineIdentifier : IMineIdentifier
-    {
-
         private static bool ColorNear(Color a, Color b)
         {
             int gap = 15;
@@ -58,16 +51,17 @@ namespace MineStudio
             return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
         }
 
-        public bool GetTableInfo(Bitmap data, out int width, out int height)
+        public bool GetTableInfo(Bitmap data, out int width, out int height, out int ileft, out int itop, out int iwidth, out int iheight)
         {
-            int iwidth = data.Width;
-            int iheight = data.Height;
+            int imgwidth = data.Width;
+            int imgheight = data.Height;
+            itop = ileft = iwidth = iheight = 0;
             height = -1;
             width = -1;
             List<int> toj = new List<int>();
-            for (var i = iwidth/2; i < iwidth; i+=3)
+            for (var i = imgwidth/2; i < imgwidth; i+=3)
             {
-                var l1=FindMutation(data, new Point(i, 0), (ref Point point) => { point.Y++; }, (Point t) => t.Y < iheight);
+                var l1=FindMutation(data, new Point(i, 0), (ref Point point) => { point.Y++; }, (Point t) => t.Y < imgheight);
                 var l2=from item in l1 where ColorNear(Color.Black, data.GetPixel(item.X, item.Y)) select item;
                 if (l2.Count() > 9)
                 {
@@ -89,9 +83,9 @@ namespace MineStudio
             }
 
             List<int> toy = new List<int>();
-            for (var i = iheight/2; i < iheight; i+=2)
+            for (var i = imgheight/2; i < imgheight; i+=2)
             {
-                var l1=FindMutation(data, new Point(0, i), (ref Point point) => { point.X++; }, (Point t) => t.X < iwidth);
+                var l1=FindMutation(data, new Point(0, i), (ref Point point) => { point.X++; }, (Point t) => t.X < imgwidth);
                 var l2=from item in l1 where ColorNear(Color.Black, data.GetPixel(item.X, item.Y)) select item;
                 if (l2.Count() > 9)
                 {

@@ -39,7 +39,13 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MineIdentifier.cs" />
+    <Compile Include="Identifier\AccessMineIdentifier.cs" />
+    <Compile Include="Identifier\DotMineIdentifier.cs" />
+    <Compile Include="Identifier\IdentifierHelper.cs" />
+    <Compile Include="Identifier\MineIdentifierFactory.cs" />
+    <Compile Include="Identifier\LineMineIdentifier.cs" />
+    <Compile Include="MineFactory.cs" />
+    <Compile Include="Identifier\IMineIdentifier.cs" />
     <Compile Include="MineCell.cs" />
     <Compile Include="MineTable.cs" />
     <Compile Include="Program.cs" />
