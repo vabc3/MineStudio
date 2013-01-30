@@ -42,10 +42,9 @@ namespace Test
             int n;
             bool actual = Target.GetCellInfo(data, out status, out n);
             Assert.AreEqual(true, actual);
- 
+            Assert.AreEqual(CellStatus.Ground, status);
             Assert.AreEqual(x, n);
         }
-
 
         [TestMethod()]
         public void CellTest0()
@@ -115,6 +114,65 @@ namespace Test
         {
             NumTest(8,2);
         }
-       
+
+
+        private void UnTest(int app=1)
+        {
+            string url = string.Format("{0}u-{1}.png", Prefix, app);
+            Bitmap data = new Bitmap(url);
+            CellStatus status;
+            int n;
+            bool actual = Target.GetCellInfo(data, out status, out n);
+            Assert.AreEqual(true, actual);
+            Assert.AreEqual(CellStatus.Unknow,status);
+        }
+
+        [TestMethod()]
+        public void CellTestU()
+        {
+            UnTest();
+        }
+
+        [TestMethod()]
+        public void CellTestU_2()
+        {
+            UnTest( 2);
+        }
+
+        [TestMethod()]
+        public void CellTestU_3()
+        {
+            UnTest( 3);
+        }
+
+        private void MiTest(int app=1)
+        {
+            string url = string.Format("{0}m-{1}.png", Prefix, app);
+            Bitmap data = new Bitmap(url);
+            CellStatus status;
+            int n;
+            bool actual = Target.GetCellInfo(data, out status, out n);
+            Assert.AreEqual(true, actual);
+            Assert.AreEqual(CellStatus.Mine, status);
+        }
+
+        [TestMethod()]
+        public void CellTestM()
+        {
+            MiTest();
+        }
+
+        [TestMethod()]
+        public void CellTestM_2()
+        {
+            MiTest();
+        }
+
+        [TestMethod()]
+        public void CellTestM_3()
+        {
+            MiTest();
+        }
+
     }
 }

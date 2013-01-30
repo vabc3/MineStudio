@@ -71,9 +71,11 @@ namespace MineStudio.Identifier
                 {Color.FromArgb(24,26,137),4},
                 {Color.FromArgb(24,128,134),6},
                 {Color.FromArgb(174,28,31),8},//0.275555555555556
-                {Color.FromArgb(88,127,223),-1},//unknow
-                {Color.FromArgb(141,200,249),-1},//unknow
-                {Color.FromArgb(59,78,195),-1}//UNCOV
+                //{Color.FromArgb(88,127,223),-1},//unknow
+                //{Color.FromArgb(141,200,249),-1},//unknow
+                {Color.FromArgb(59,78,195),-1},//UNCOV
+                {Color.FromArgb(100,146,233),-1},//UNCOV
+                {Color.FromArgb(152,208,251),-1},//UNCOV
                 //{Color.FromArgb(79,103,156),-2},//mine
             };
 
@@ -187,23 +189,30 @@ namespace MineStudio.Identifier
             Console.WriteLine(d);
             Console.WriteLine("Byway");
             data.Save("d:\\gc.png");
-
+            bool rt=false;
             foreach (var item in patterns.Keys) {
                 if (item.Near(t,16)) {
                     n = patterns[item];
                     if (fills.ContainsKey(n)) {
                         if (IdentifierHelper.ValueNear(fills[n], d,.06)) {
-                            status = CellStatus.Ground;
-                            return true;
+                            rt = true; break;
                         }
                     } else {
                         status = CellStatus.Ground;
-                        return true;
+                        rt = true; break;
                     }
                 }
             }
-            
-            return false;
+            if (rt) {
+                if (n >= 0)
+                    status = CellStatus.Ground;
+                else if (n == -1)
+                    status = CellStatus.Unknow;
+                else
+                    status = CellStatus.Mine;
+            }
+
+            return rt;
         }
     }
 }
