@@ -105,9 +105,14 @@ namespace Test
         }
 
         [TestMethod()]
-        public void CellTest8()
+        public void CellTest8_1()
         {
             NumTest(8);
+        }
+
+        [TestMethod()]
+        public void CellTest8_2()
+        {
             NumTest(8,2);
         }
        

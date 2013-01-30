@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace OpenSURFcs
 {
-    class Match
+    public static class SurfMatch
     {
+
+
         private const float FLT_MAX = 3.402823466e+38F;        /* max value */
 
         public static List<IPoint>[] getMatches(List<IPoint> ipts1, List<IPoint> ipts2)
@@ -33,7 +35,7 @@ namespace OpenSURFcs
                         d2 = dist;
                     }
                 }
-                // If match has a d1:d2 ratio < 0.65 ipoints are a match  
+                // If match ha s a d1:d2 ratio < 0.65 ipoints are a match  
                 if (d1 / d2 < 0.77) //越小Match点越少  
             {
                     matches[0].Add(ipts1[i]);
@@ -50,5 +52,12 @@ namespace OpenSURFcs
                 sum += (ip1.descriptor[i] - ip2.descriptor[i]) * (ip1.descriptor[i] - ip2.descriptor[i]);
             return Math.Sqrt(sum);
         }  
+
+        public static bool IsNear(this IPoint ip1, IPoint ip2)
+        {
+            double dis = GetDistance(ip1, ip2);
+            Console.WriteLine("Gap:{0}",dis);
+            return dis < .25;
+        }
     }
 }
