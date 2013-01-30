@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using MineStudio.Identifier;
 using System.Linq;
+using OpenSURFcs;
 
 namespace MineStudio
 {
@@ -12,24 +13,17 @@ namespace MineStudio
 
         static void Main(string[] args)
         {
-            IMineIdentifier target = MineIdentifierFactory.GetDefaultIdentifier();
-            Bitmap data = new Bitmap(Prefix + "5-1.png");
-            CellStatus s;
-            int n;
-            target.GetCellInfo(data, out s, out n);
+            Bitmap img = new Bitmap(Prefix + "5-2.png");
+            // Create Integral Image
+            IntegralImage iimg = IntegralImage.FromImage(img);
+
+            // Extract the interest points
+            var ipts = FastHessian.getIpoints(0.0002f, 5, 2, iimg);
+
+            // Describe the interest points
+            SurfDescriptor.DecribeInterestPoints(ipts, false, false, iimg);
+
         }
 
-        private static void D1()
-        {
-            IMineIdentifier target = MineIdentifierFactory.GetDefaultIdentifier();
-            Bitmap data = new Bitmap(Prefix + "Table0.png");
-            MineMaker mm = new MineMaker(data);
-            var t = mm.GetGrid(17, 7);
-            CellStatus ct;
-            int c;
-
-            t.Save("qq.png");
-            target.GetCellInfo(t, out ct, out c);
-        }
     }
 }
