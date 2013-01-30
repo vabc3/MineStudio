@@ -21,8 +21,7 @@ namespace MineStudio.Identifier
             return Color.Black.Near(data.GetPixel(p)) || lt.Near(data.GetPixel(p)) || lt2.Near(data.GetPixel(p));
         }
 
-        private const int Gap = 32;
-        public static bool Near(this Color a, Color b)
+        public static bool Near(this Color a, Color b,int Gap=32)
         {
             //Console.WriteLine("Compare {0} with {1}", a, b);
 
@@ -47,6 +46,16 @@ namespace MineStudio.Identifier
         public static void DrawLine(this Bitmap data, Point a, Point b, Color color)
         {
             data.DrawPoints(MakeLine(a, b), color);
+        }
+
+        public static void DrawRect(this Bitmap data, Point a, Point b, Color color)
+        {
+            Point p = new Point( b.X,a.Y);
+            Point q = new Point( a.X,b.Y);
+            data.DrawPoints(MakeLine(a, p), color);
+            data.DrawPoints(MakeLine(p, b), color);
+            data.DrawPoints(MakeLine(b, q), color);
+            data.DrawPoints(MakeLine(q, a), color);
         }
 
         public static IList<Point> MakeLine(Point a, Point b)
@@ -169,7 +178,7 @@ namespace MineStudio.Identifier
             return l;
         }
 
-        private static bool ValueNear(double a, double b, double per = .11)
+        public static bool ValueNear(double a, double b, double per = .11)
         {
             return Math.Abs((a - b)/a) < per;
         }

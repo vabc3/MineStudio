@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using MineStudio.Identifier;
 
 namespace MineStudio
 {
@@ -30,15 +31,14 @@ namespace MineStudio
         }
 
 
-        public static MineTable CreateRandomTable(int height,int width,int mines)
+        public static MineTable CreateRandomTable(int height, int width, int mines)
         {
             MineTable mt = new MineTable(height, width, mines);
             int total = height*width;
             int[] arr = new int[total];
             for (var i=0; i<total; i++) arr[i]=i;
             Random rd = new Random();
-            for (var i = 0; i < mines; i++)
-            {
+            for (var i = 0; i < mines; i++) {
                 var c = rd.Next(i, total);
                 mt.SetStatus(arr[c]%width, arr[c]/width, CellStatus.Mine);
                 if (c!=i) arr[c] = arr[i];
@@ -47,8 +47,16 @@ namespace MineStudio
             return mt;
         }
 
+       
+
+
         public static MineTable CreateFromBitmap(Bitmap bitmap)
         {
+            //int width, height, iw, ih, it, il;
+            //if (!_mi.GetTableInfo(bitmap, out width, out height, out il, out it, out iw, out ih)) return null;
+            //MineTable mt = new MineTable(height, width);
+
+
             return null;
         }
     }

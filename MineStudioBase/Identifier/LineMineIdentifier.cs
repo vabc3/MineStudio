@@ -72,7 +72,7 @@ namespace MineStudio.Identifier
             return true;
         }
         
-        public bool GetCellInfo(System.Drawing.Bitmap data, out CellStatus status, int n)
+        public bool GetCellInfo(Bitmap data, out CellStatus status, out int n)
         {
             throw new NotImplementedException();
         }

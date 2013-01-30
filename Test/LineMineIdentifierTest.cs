@@ -34,6 +34,17 @@ namespace Test
         }
 
         [TestMethod()]
+        public void GetTableInfoTest0()
+        {
+            Bitmap data = new Bitmap(Prefix+"Table0.png");
+            int width,height,ileft,itop,iwidth,iheight;
+            bool actual = Target.GetTableInfo(data, out width, out height, out ileft, out itop, out iwidth, out iheight);
+            Assert.AreEqual(true, actual);
+            Assert.AreEqual(23, width);
+            Assert.AreEqual(20, height);
+        }
+
+        [TestMethod()]
         public void GetTableInfoTest1()
         {
             Bitmap data = new Bitmap(Prefix+"Table1.bmp");

@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="LineMineIdentifierTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CellTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MineStudioBase\MineStudioBase.csproj">

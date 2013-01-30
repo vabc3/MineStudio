@@ -117,7 +117,7 @@ namespace MineStudio.Identifier
             return true;
         }
 
-        public bool GetCellInfo(Bitmap data, out CellStatus status, int n)
+        public bool GetCellInfo(Bitmap data, out CellStatus status, out int n)
         {
             status = CellStatus.Ground;
             n = 6;

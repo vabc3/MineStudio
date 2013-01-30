@@ -47,6 +47,7 @@
     <Compile Include="MineFactory.cs" />
     <Compile Include="Identifier\IMineIdentifier.cs" />
     <Compile Include="MineCell.cs" />
+    <Compile Include="MineMaker.cs" />
     <Compile Include="MineTable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
