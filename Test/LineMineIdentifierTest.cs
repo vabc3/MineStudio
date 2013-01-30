@@ -107,5 +107,25 @@ namespace Test
             Assert.AreEqual(15, width);
             Assert.AreEqual(14, height);
         }
+
+        [TestMethod()]
+        public void GetTableInfoTest8()
+        {
+            Bitmap data = new Bitmap(Prefix+"Table8.png");
+            int width,height,ileft,itop,iwidth,iheight;
+            bool actual = Target.GetTableInfo(data, out width, out height, out ileft, out itop, out iwidth, out iheight);
+            Assert.AreEqual(false, actual);
+        }
+
+        [TestMethod()]
+        public void GetTableInfoTest9()
+        {
+            Bitmap data = new Bitmap(Prefix+"Table9.png");
+            int width,height,ileft,itop,iwidth,iheight;
+            bool actual = Target.GetTableInfo(data, out width, out height, out ileft, out itop, out iwidth, out iheight);
+            Assert.AreEqual(true, actual);
+            Assert.AreEqual(27, width);
+            Assert.AreEqual(21, height);
+        }
     }
 }

@@ -23,15 +23,22 @@ namespace MineStudio
         static void Main(string[] args)
         {
             IMineIdentifier target = MineIdentifierFactory.GetDefaultIdentifier();
-            Bitmap data = new Bitmap(Prefix+"Table1.bmp");
-            IList<Point> list = IdentifierHelper.MakeLine(new Point(0, 163), new Point(1279, 163));
+            Bitmap data = new Bitmap(Prefix+"Table3.png");
+
+            //Console.WriteLine(data.IsOnVerticalLine(new Point(640,436)));
+
+            Point p = data.FindProperPoint();
+            //var list = IdentifierHelper.MakeLine(new Point(0, p.Y), new Point(data.Width-1, p.Y));
+            var list = IdentifierHelper.MakeLine(new Point(p.X, 0), new Point(p.X, data.Height-1));
             var l1 = data.FindFeaturedPoints(list);
-            Console.WriteLine("L1:{0}",l1.Count());
-           
-            //var l2 = l1.Where(data.IsOnVerticalLine).ToList();
+
+            //var l2 = l1.Where(vp => data.IsOnHorizontalLine(vp) && data.isSep(vp)).ToList();
+            //var l2 = l1.Where(vp=>data.IsOnVerticalLine(vp)).ToList();
             var l2 = l1.Where(data.isSep).ToList();
-            Console.WriteLine(l2.Count()); 
+            
             var l3 = data.GetCord(l2);
+            Console.WriteLine("L1:{0}", l1.Count());
+            Console.WriteLine(l2.Count()); 
             Console.WriteLine(l3.Count());
 
             //foreach (var item in l1)
