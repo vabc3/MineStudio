@@ -40,21 +40,21 @@ namespace MineStudio.Identifier
                         }
         };
 
+
         public static readonly List<ICellIdentifier> IdentifierList = new List<ICellIdentifier>()
             {
-                new SurfIndentifier(N5,5),
-                new SurfIndentifier(N7,7),
-                new ColorIndentifier(Color.FromArgb(0,0,0),-1,0),
-                new ColorIndentifier( Color.FromArgb(71,87,190),.2,1),
-                new ColorIndentifier( Color.FromArgb(40,110,18),-1,2),
-                new ColorIndentifier( Color.FromArgb(171,27,31),0.23,3),
-                new ColorIndentifier( Color.FromArgb(24,26,137),-1,4),
-                new ColorIndentifier( Color.FromArgb(24,128,134),-1,6),
-                new ColorIndentifier( Color.FromArgb(59,78,195),-1,CellStatus.Covered),
-                new ColorIndentifier( Color.FromArgb(100,146,233),-1,CellStatus.Covered),
-                new ColorIndentifier( Color.FromArgb(152,208,251),-1,CellStatus.Covered),
-                
-                new ColorIndentifier( Color.FromArgb(174,28,31),-1,8),
+                new SurfIndentifier(5,N5),
+                new SurfIndentifier(7,N7),
+                new ColorIndentifier(0,Color.FromArgb(0,0,0)),
+                new ColorIndentifier(1,Color.FromArgb(71,87,190),.22),
+                new ColorIndentifier(2,Color.FromArgb(40,110,18)),
+                new ColorIndentifier(3,Color.FromArgb(171,27,31),0.23),
+                new ColorIndentifier(4,Color.FromArgb(24,26,137)),
+                new ColorIndentifier(4,Color.FromArgb(14,15,136)),
+                new ColorIndentifier(6,Color.FromArgb(24,128,134)),
+                new ColorIndentifier(8,Color.FromArgb(174,28,31)),
+                new MineIdentifier(),
+                new DefaultIdentifier(CellStatus.Covered),
                 //new ColorIndentifier( Color.FromArgb(88,126,193),-1,CellStatus.Mine),
                 //new ColorIndentifier( Color.FromArgb(209,178,108),-1,CellStatus.Mine),
                 //new ColorIndentifier( Color.FromArgb(102,105,190),-1,CellStatus.Mine),

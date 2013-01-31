@@ -12,6 +12,39 @@ namespace MineStudio.Identifier
         bool Deal(BitmapWrapper bw, out CellStatus status, out int n);
     }
 
+    class DefaultIdentifier:BaseIdentifier
+    {
+        public DefaultIdentifier(int n) : base(n)
+        {
+        }
+
+        public DefaultIdentifier(CellStatus status) : base(status)
+        {
+        }
+
+        public override bool Deal(BitmapWrapper bw)
+        {
+            return true;
+        }
+    }
+
+    class MineIdentifier:ICellIdentifier
+    {
+        public bool Deal(BitmapWrapper bw, out CellStatus status, out int n)
+        {
+            status = CellStatus.Mine;
+            n = -3;
+            var bm = bw.img;
+            var w = bm.Width/2;
+            var h = bm.Height/2;
+            for(var i=0;i<h;i++)
+                for (var j = 0; j < w; j++) {
+                    if (bm.GetPixel(j, i).R>250) return true;
+                }
+            return false;
+        }
+    }
+
     internal abstract class BaseIdentifier : ICellIdentifier
     {
         protected readonly CellStatus Status;
@@ -42,7 +75,8 @@ namespace MineStudio.Identifier
     class SurfIndentifier : BaseIdentifier
     {
         private readonly IPoint _ipoint;
-        public SurfIndentifier(IPoint fea, int n):base(n)
+        public SurfIndentifier(int n, IPoint fea)
+            : base(n)
         {
             _ipoint=fea;
         }
@@ -58,13 +92,15 @@ namespace MineStudio.Identifier
         private readonly Color _color;
         private readonly double _factor;
 
-        public ColorIndentifier(Color color, double factor,  int n):base(n)
+        public ColorIndentifier(int n, Color color, double factor=-1)
+            : base(n)
         {
             _color=color;
             _factor=factor;
         }
 
-        public ColorIndentifier(Color color, double factor, CellStatus status,int n=-3):base(status)
+        public ColorIndentifier(CellStatus status, Color color, double factor=-1)
+            : base(status)
         {
             _color=color;
             _factor=factor;

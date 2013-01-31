@@ -56,8 +56,9 @@ namespace OpenSURFcs
         public static bool IsNear(this IPoint ip1, IPoint ip2)
         {
             double dis = GetDistance(ip1, ip2);
-            //Console.WriteLine("Gap:{0}",dis);
-            return dis < .25;
+            Console.WriteLine("Gap:{0}",dis);
+            //return dis < .25;
+            return dis < .3;
         }
     }
 }

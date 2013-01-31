@@ -9,6 +9,7 @@ namespace MineStudio.Identifier
     {
         internal BitmapWrapper(Bitmap data)
         {
+            img=data;
             IntegralImage iimg = IntegralImage.FromImage(data);
             List= FastHessian.getIpoints(0.0002f, 5, 2, iimg);
             SurfDescriptor.DecribeInterestPoints(List, false, false, iimg);
@@ -35,6 +36,7 @@ namespace MineStudio.Identifier
 
         }
 
+        public readonly Bitmap img;
         public readonly List<IPoint> List;
         public readonly Color AvgColor;
         public readonly double Factor;

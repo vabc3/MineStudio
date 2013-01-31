@@ -7,8 +7,6 @@ using MineStudio.Identifier;
 
 namespace Test
 {
-
-
     /// <summary>
     ///这是 LineMineIdentifierTest 的测试类，旨在
     ///包含所有 LineMineIdentifierTest 单元测试
@@ -67,6 +65,12 @@ namespace Test
         }
 
         [TestMethod()]
+        public void CellTest1_4()
+        {
+            NumTest(1, 4);
+        }
+
+        [TestMethod()]
         public void CellTest2()
         {
             NumTest(2);
@@ -89,10 +93,22 @@ namespace Test
         }
 
         [TestMethod()]
+        public void CellTest4_3()
+        {
+            NumTest(4, 3);
+        }
+
+        [TestMethod()]
         public void CellTest5()
         {
             NumTest(5);
             NumTest(5,2);
+        }
+
+        [TestMethod()]
+        public void CellTest5_3()
+        {
+            NumTest(5, 3);
         }
 
         [TestMethod()]

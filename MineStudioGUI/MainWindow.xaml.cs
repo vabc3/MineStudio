@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -34,12 +37,12 @@ namespace MineStudio.GUI
             DispatcherTimer dt = new DispatcherTimer();
             dt.Interval = TimeSpan.FromSeconds(1);
             dt.Tick += new EventHandler(dt_Tick);
-            dt.Start();
+            //dt.Start();
 
             DispatcherTimer d_canv = new DispatcherTimer();
             d_canv.Interval = TimeSpan.FromSeconds(1);
             d_canv.Tick += new EventHandler(dt_Canvas);
-            dt.Start();
+            //dt.Start();
         }
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
@@ -61,6 +64,7 @@ namespace MineStudio.GUI
             if (_mineTable != null)
                 _mineTable.Deduce();
             //  DataGrid1.ItemsSource = _mineTable.Table;
+            Canvas_Update();
         }
 
         private void ButtonStat_Click(object sender, RoutedEventArgs e)
@@ -93,14 +97,13 @@ namespace MineStudio.GUI
 
         private Bitmap bitmap;
         private IntPtr fd1, fd;
-
+        private NativeRECT rect;
         private void dt_Tick(object sender, EventArgs e)
         {
-            NativeRECT rect = new NativeRECT();
+            rect = new NativeRECT();
             fd1 = FindWindow("minesweeper", "扫雷");
             fd = FindWindowEx(fd1, IntPtr.Zero, "static", string.Empty);
-            if (fd==IntPtr.Zero)
-            {
+            if (fd==IntPtr.Zero) {
                 Image1.Source=_defaultSource;
                 Image1.Cursor = Cursors.Hand;
                 bitmap=null;
@@ -115,8 +118,7 @@ namespace MineStudio.GUI
             Rectangle r = new Rectangle(rect.left, rect.top, w, h);
 
             bitmap = new Bitmap(w, h, PixelFormat.Format32bppArgb);
-            using (Graphics g = Graphics.FromImage(bitmap))
-            {
+            using (Graphics g = Graphics.FromImage(bitmap)) {
                 g.CopyFromScreen(r.Left, r.Top, 0, 0, r.Size, CopyPixelOperation.SourceCopy);
             }
             IntPtr ip = bitmap.GetHbitmap();
@@ -146,8 +148,7 @@ namespace MineStudio.GUI
 
         private void Image1_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (bitmap == null)
-            {
+            if (bitmap == null) {
                 var qq = Environment.GetEnvironmentVariables();
                 string pd = Environment.GetEnvironmentVariable("ProgramW6432");
                 Process.Start(pd + @"\Microsoft Games\Minesweeper\MineSweeper.exe");
@@ -174,14 +175,11 @@ namespace MineStudio.GUI
 
             double bl = 1.0*_mineTable.Width/_mineTable.Height;
             double bc = _canvasWidth/_canvasHeight;
-            if (bl > bc)
-            {
+            if (bl > bc) {
                 //Depends on width
                 _boardWidth     = _canvasWidth*Factor;
                 _boardHeight    = _boardWidth / bl;
-            }
-            else
-            {
+            } else {
                 _boardHeight = _canvasHeight*Factor;
                 _boardWidth = _boardHeight * bl;
             }
@@ -190,7 +188,10 @@ namespace MineStudio.GUI
             _boardLeft = (_canvasWidth - _boardHeight)/2;
 
 
-            var myRectangleGeometry = new RectangleGeometry { Rect = new Rect(_boardLeft, _boardTop, _boardWidth, _boardHeight) };
+            var myRectangleGeometry = new RectangleGeometry
+            {
+                Rect = new Rect(_boardLeft, _boardTop, _boardWidth, _boardHeight)
+            };
 
             var myPath = new Path
                 {
@@ -201,8 +202,7 @@ namespace MineStudio.GUI
                 };
             Canvas1.Children.Add(myPath);
 
-            for (int i = 1; i < _mineTable.Height; i++)
-            {
+            for (int i = 1; i < _mineTable.Height; i++) {
                 var myLineGeometry = new LineGeometry
                     {
                         StartPoint = new Point(_boardLeft, _boardTop+i*dh),
@@ -218,8 +218,7 @@ namespace MineStudio.GUI
             }
 
 
-            for (var i = 1; i < _mineTable.Width; i++)
-            {
+            for (var i = 1; i < _mineTable.Width; i++) {
                 var myLineGeometry = new LineGeometry
                 {
                     StartPoint = new Point(_boardLeft+ i*dw, _boardTop),
@@ -245,8 +244,7 @@ namespace MineStudio.GUI
             double py = (cell.Y + .5)* dh+_boardTop;
 
             string str = "";
-            switch (cell.Status)
-            {
+            switch (cell.Status) {
                 case CellStatus.Undef:
                     str = "U";
                     break;
@@ -257,8 +255,8 @@ namespace MineStudio.GUI
                     str = "M";
                     break;
                 case CellStatus.Ground:
-                    if(cell.N!=0)
-                    str = cell.N.ToString();
+                    if (cell.N!=0)
+                        str = cell.N.ToString();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -279,8 +277,7 @@ namespace MineStudio.GUI
                 };
             Canvas1.Children.Add(pa);
 
-            if (Selected == cell)
-            {
+            if (Selected == cell) {
                 double pw=.4*dw;
                 double ph=.4*dh;
                 RectangleGeometry rg =
@@ -317,15 +314,14 @@ namespace MineStudio.GUI
         {
             Canvas1.Children.Clear();
 
-            if (_mineTable != null)
-            {
+            if (_mineTable != null) {
                 dh = _boardHeight/_mineTable.Height;
                 dw = _boardWidth/_mineTable.Width;
                 DrawBoard();
                 foreach (var item in _mineTable.Table)
-                DrawCell(item);
+                    DrawCell(item);
             }
-            
+
         }
 
 
@@ -342,16 +338,108 @@ namespace MineStudio.GUI
             Canvas_Update();
         }
 
+
+        class CT
+        {
+            public int x, y, t;
+        }
+
+
+        private void Click(int x, int y, int t=1)
+        {
+            var bl = rect.left + mm.il;
+            var bt = rect.top + mm.it;
+            Class1.Click(rect.left, rect.top);
+            int X = Convert.ToInt32(bl + (x + .5)*mm.dw);
+            int Y = Convert.ToInt32(bt+(y + .5)*mm.dh);
+
+            Task.Factory.StartNew(() => Class1.Click(X, Y, t));
+        }
+
+        private void Click(List<CT> list)
+        {
+            var bl = rect.left + mm.il;
+            var bt = rect.top + mm.it;
+
+            ManualResetEvent re = new ManualResetEvent(false);
+            Task.Factory.StartNew(() =>
+                {
+                    Class1.Click(rect.left, rect.top);
+                    Thread.Sleep(200);
+                    foreach (var item in list) {
+                        int X = Convert.ToInt32(bl + (item.x + .5)*mm.dw);
+                        int Y = Convert.ToInt32(bt+(item.y + .5)*mm.dh);
+                        Class1.Click(X, Y, item.t);
+                        Thread.Sleep(100);
+                    }
+                    re.Set();
+                });
+            re.WaitOne();
+        }
+
         private void ButtonTest_Click(object sender, RoutedEventArgs e)
         {
-            bitmap.Save("tbc.bmp");
+           
+            //Task.Factory.StartNew(() =>
+            //    {
+                    while (true) {
+                        dt_Tick(null, null);
+                        if (bitmap != null) {
+                            mm = new MineMaker(bitmap);
+                            _mineTable = mm.GetTable();
+                            if (_mineTable == null) break;
+
+                            DataGrid1.ItemsSource = _mineTable.Table;
+                        } else {
+                            break;
+                        }
+                        _mineTable.Deduce();
+                        //var bl = rect.left + mm.il;
+                        //var bt = rect.top + mm.it;
+                        //Class1.Click(rect.left, rect.top);
+
+                        List<CT> list = new List<CT>();
+                        var tb = _mineTable.Table;
+                        foreach (var mineCell in tb) {
+                            if (CellStatus.Ground == mineCell.PredStatus) {
+                                list.Add(new CT()
+                                {
+                                    x = mineCell.X,
+                                    y = mineCell.Y,
+                                    t = 1
+                                });
+                            } else if (CellStatus.Mine == mineCell.PredStatus) {
+                                list.Add(new CT()
+                                    {
+                                        x = mineCell.X,
+                                        y = mineCell.Y,
+                                        t = -1,
+                                    });
+                            }
+                        }
+                        //foreach (var item in list) {
+                        //    int X = Convert.ToInt32(bl + (item.x + .5)*mm.dw);
+                        //    int Y = Convert.ToInt32(bt+(item.y + .5)*mm.dh);
+                        //    Class1.Click(X, Y, item.t);
+                        //    Thread.Sleep(500);
+                        //}
+                        if (list.Count==0) break;
+                        Click(list);
+                        _mineTable=null;
+                        Thread.Sleep(200);
+                        //break;
+                    }
+                //});
+            //Click(list);
+
+
+
         }
 
         private void DataGrid1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DataGrid dt = sender as DataGrid;
-            if (dt.SelectedIndex > 0)
-            {
+            if (dt.SelectedIndex > 0) {
                 Selected = _mineTable.Table[dt.SelectedIndex];
             }
             Canvas_Update();
@@ -362,13 +450,12 @@ namespace MineStudio.GUI
             var p = e.GetPosition(Canvas1);
             int x = (int)((p.X - _boardLeft)/dw);
             int y = (int)((p.Y - _boardTop)/dh);
-            if (_mineTable.IndexValid(x, y)){
+            if (_mineTable.IndexValid(x, y)) {
                 DataGrid1.SelectedIndex = _mineTable.GetIndex(x, y);
 
                 var b = mm.GetGrid(x, y);
-                b.Save(string.Format("Grid_{0}_{1}.png",x,y));
-            } else
-            {
+                b.Save(string.Format("Grid_{0}_{1}.png", x, y));
+            } else {
                 DataGrid1.SelectedIndex = -1;
                 Selected=null;
             }

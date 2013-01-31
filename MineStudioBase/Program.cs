@@ -13,7 +13,8 @@ namespace MineStudio
 
         static void Main(string[] args)
         {
-            Bitmap img = new Bitmap(Prefix + "1-3.png");
+            
+            Bitmap img = new Bitmap(Prefix + "5-3.png");
             MineScanner im = new MineScanner();
             CellStatus s;
             int n;
