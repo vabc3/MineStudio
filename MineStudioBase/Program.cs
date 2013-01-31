@@ -13,11 +13,13 @@ namespace MineStudio
 
         static void Main(string[] args)
         {
-            Bitmap img = new Bitmap(Prefix + "u-1.png");
-            IMineIdentifier im = MineIdentifierFactory.GetDefaultIdentifier();
+            Bitmap img = new Bitmap(Prefix + "1-3.png");
+            MineScanner im = new MineScanner();
             CellStatus s;
             int n;
-            im.GetCellInfo(img,out s,out n);
+            var b=im.GetCellInfo(img,out s,out n);
+
+            int v = 2;
         }
     }
 }

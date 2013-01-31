@@ -5,7 +5,7 @@ namespace MineStudio
 {
     public enum CellStatus
     {
-        Unknow, Mine, Ground
+        Undef,Covered, Mine, Ground
     }
 
     public class MineCell : INotifyPropertyChanged
@@ -16,8 +16,8 @@ namespace MineStudio
             Y           = y;
             MineCount   = -1;
             UnknowCount = -1;
-            Status      = CellStatus.Unknow;
-            PredStatus  = CellStatus.Unknow;
+            Status      = CellStatus.Covered;
+            PredStatus  = CellStatus.Covered;
             PredReason   = "";
         }
 
@@ -69,7 +69,7 @@ namespace MineStudio
 
         public void CleanPred()
         {
-            PredStatus = CellStatus.Unknow;
+            PredStatus = CellStatus.Covered;
             PredReason = "";
         }
 

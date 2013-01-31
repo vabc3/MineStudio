@@ -12,7 +12,7 @@ namespace MineStudio.Identifier
             return data.GetPixel(p.X, p.Y);
         }
 
-        public static bool isSep(this Bitmap data, Point p)
+        public static bool IsSep(this Bitmap data, Point p)
         {
             Color lt = Color.FromArgb(22, 26, 36);
             //33 40 43
@@ -156,7 +156,6 @@ namespace MineStudio.Identifier
                     Point vp = new Point(data.Width*i/Sep, p.Y);
                     if (data.IsOnHorizontalLine(vp, false)) return true;
                 }
-
                 return false;
             }
         }
@@ -286,7 +285,6 @@ namespace MineStudio.Identifier
         {
             Point p = new Point(data.Width/2, data.Height/2);
 
-            //p = new Point(640, 399);
             List<PointPut> lp = new List<PointPut>()
                 {
                     delegate(Bitmap d1, ref Point p1)

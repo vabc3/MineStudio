@@ -48,7 +48,11 @@ namespace MineStudio
             int index = GetIndex(x, y);
             switch (status)
             {
-                case CellStatus.Unknow:
+                case CellStatus.Undef:
+                    Table[index].Status = CellStatus.Undef;
+                    break;
+                case CellStatus.Covered:
+                    Table[index].Status = status;
                     break;
                 case CellStatus.Mine:
                     return Table[index].SetStatusMine();
@@ -74,7 +78,7 @@ namespace MineStudio
                 {
                     switch (it.Status)
                     {
-                        case CellStatus.Unknow:
+                        case CellStatus.Covered:
                             uc++;
                             break;
                         case CellStatus.Mine:
@@ -97,7 +101,7 @@ namespace MineStudio
             if (Current==MineCount)
             {
                 for (var i=0; i<Width*Height; i++)
-                    if (CellStatus.Unknow==Table[i].Status)
+                    if (CellStatus.Covered==Table[i].Status)
                     {
                         Table[i].SetStatusGround(Table[i].MineCount);
                         Table[i].OnPropertyChanged();
@@ -115,7 +119,7 @@ namespace MineStudio
                 if (CellStatus.Ground != item.Status || 0==item.UnknowCount)
                     continue;
 
-                var unknows = from it in item.NearCells where it.Status==CellStatus.Unknow && it.PredStatus==CellStatus.Unknow select it;
+                var unknows = from it in item.NearCells where it.Status==CellStatus.Covered && it.PredStatus==CellStatus.Covered select it;
                 if (item.N == item.MineCount)
                 {
                     foreach (var it in unknows)
@@ -151,7 +155,7 @@ namespace MineStudio
                     var st=Table[idx].Status;
                     switch (st)
                     {
-                        case CellStatus.Unknow:
+                        case CellStatus.Covered:
                             Console.Write('U');
                             break;
                         case CellStatus.Mine:

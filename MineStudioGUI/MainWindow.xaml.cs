@@ -32,7 +32,7 @@ namespace MineStudio.GUI
             InitializeComponent();
             _defaultSource = Image1.Source;
             DispatcherTimer dt = new DispatcherTimer();
-            dt.Interval = TimeSpan.FromSeconds(.5);
+            dt.Interval = TimeSpan.FromSeconds(1);
             dt.Tick += new EventHandler(dt_Tick);
             dt.Start();
 
@@ -50,7 +50,8 @@ namespace MineStudio.GUI
         private void ButtonRandom_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Console.WriteLine(Properties.Resources.MainWindow_ButtonRandom_Click_Miner_);
-            _mineTable = MineFactory.CreateRandomTable(16,16,40);
+            //_mineTable = MineFactory.CreateRandomTable(16,16,40);
+            _mineTable = MineFactory.CreateFixedTable();
             DataGrid1.ItemsSource = _mineTable.Table;
         }
 
@@ -125,10 +126,16 @@ namespace MineStudio.GUI
             DeleteObject(ip);
             Image1.Source = bitmapSource;
         }
-
+        MineMaker mm=null;
         private void ButtonLoad_Click(object sender, RoutedEventArgs e)
         {
             dt_Tick(null, null);
+            if (bitmap != null) {
+                mm = new MineMaker(bitmap);
+                _mineTable= mm.GetTable();
+                DataGrid1.ItemsSource = _mineTable.Table;
+            }
+
         }
 
 
@@ -237,15 +244,20 @@ namespace MineStudio.GUI
             double px = (cell.X + .5) * dw+_boardLeft;
             double py = (cell.Y + .5)* dh+_boardTop;
 
-            string str = "U";
+            string str = "";
             switch (cell.Status)
             {
-                case CellStatus.Unknow:
+                case CellStatus.Undef:
+                    str = "U";
+                    break;
+                case CellStatus.Covered:
+                    str = "C";
                     break;
                 case CellStatus.Mine:
                     str = "M";
                     break;
                 case CellStatus.Ground:
+                    if(cell.N!=0)
                     str = cell.N.ToString();
                     break;
                 default:
@@ -281,7 +293,7 @@ namespace MineStudio.GUI
                 Canvas1.Children.Add(pc);
             }
 
-            if (cell.PredStatus==CellStatus.Unknow) return;
+            if (cell.PredStatus==CellStatus.Covered) return;
 
             EllipseGeometry eg = new EllipseGeometry(
                 new Point(px, py), 10, 10
@@ -350,9 +362,12 @@ namespace MineStudio.GUI
             var p = e.GetPosition(Canvas1);
             int x = (int)((p.X - _boardLeft)/dw);
             int y = (int)((p.Y - _boardTop)/dh);
-            if (_mineTable.IndexValid(x, y))
+            if (_mineTable.IndexValid(x, y)){
                 DataGrid1.SelectedIndex = _mineTable.GetIndex(x, y);
-            else
+
+                var b = mm.GetGrid(x, y);
+                b.Save(string.Format("Grid_{0}_{1}.png",x,y));
+            } else
             {
                 DataGrid1.SelectedIndex = -1;
                 Selected=null;

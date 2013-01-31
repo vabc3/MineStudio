@@ -17,7 +17,7 @@ namespace Test
     public class CellTest
     {
         private const String Prefix = @"..\..\..\MineStudioTest\ImageCases\";
-        private static readonly IMineIdentifier Target= MineIdentifierFactory.GetDefaultIdentifier();
+        private static readonly MineScanner Target= new MineScanner();
 
         private static Stopwatch sw = new Stopwatch();
 
@@ -58,6 +58,12 @@ namespace Test
         {
             NumTest(1);
             NumTest(1,2);
+        }
+
+        [TestMethod()]
+        public void CellTest1_3()
+        {
+            NumTest(1, 3);
         }
 
         [TestMethod()]
@@ -124,7 +130,7 @@ namespace Test
             int n;
             bool actual = Target.GetCellInfo(data, out status, out n);
             Assert.AreEqual(true, actual);
-            Assert.AreEqual(CellStatus.Unknow,status);
+            Assert.AreEqual(CellStatus.Covered,status);
         }
 
         [TestMethod()]
@@ -143,6 +149,12 @@ namespace Test
         public void CellTestU_3()
         {
             UnTest( 3);
+        }
+
+        [TestMethod()]
+        public void CellTestU_4()
+        {
+            UnTest(4);
         }
 
         private void MiTest(int app=1)
@@ -165,14 +177,19 @@ namespace Test
         [TestMethod()]
         public void CellTestM_2()
         {
-            MiTest();
+            MiTest(2);
         }
 
         [TestMethod()]
         public void CellTestM_3()
         {
-            MiTest();
+            MiTest(3);
         }
 
+        [TestMethod()]
+        public void CellTestM_4()
+        {
+            MiTest(3);
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace Test
     public class LineMineIdentifierTest
     {
         private const String Prefix = @"..\..\..\MineStudioTest\ImageCases\";
-        private static readonly IMineIdentifier Target= MineIdentifierFactory.GetDefaultIdentifier();
+        private static readonly MineScanner Target= new MineScanner();
 
         private static Stopwatch sw = new Stopwatch();
 
