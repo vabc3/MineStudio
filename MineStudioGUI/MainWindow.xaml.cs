@@ -135,6 +135,7 @@ namespace MineStudio.GUI
             if (bitmap != null) {
                 mm = new MineMaker(bitmap);
                 _mineTable= mm.GetTable();
+                if(_mineTable!=null)
                 DataGrid1.ItemsSource = _mineTable.Table;
             }
 

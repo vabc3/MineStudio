@@ -25,7 +25,7 @@ namespace MineStudio.Identifier
                     else
                         data.SetPixel(j, i, Color.Black);
                 }
-
+            
             if (cdata.Any() && cdata.Count>100)
                 AvgColor = Color.FromArgb((int)cdata.Average(p => p.R), (int)cdata.Average(p => p.G),
                                    (int)cdata.Average(p => p.B));

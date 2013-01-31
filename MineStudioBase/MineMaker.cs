@@ -9,7 +9,7 @@ namespace MineStudio
     {
         private static MineScanner _mi = new MineScanner();
 
-        private static MineTable _mt=null;
+        private MineTable _mt=null;
 
         public MineMaker(Bitmap bitmap)
         {
@@ -28,6 +28,7 @@ namespace MineStudio
                     _mt.SetStatus(j, i, status, n);
                 }
             }
+
 
         }
 

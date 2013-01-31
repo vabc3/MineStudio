@@ -108,7 +108,7 @@ namespace MineStudio.Identifier
 
         public override bool Deal(BitmapWrapper bw)
         {
-            if (_color.Near(bw.AvgColor, 16)) {
+            if (_color.Near(bw.AvgColor, 30)) {
                 return (_factor <= 0) ||bw.Factor<_factor;
             }
             return false;

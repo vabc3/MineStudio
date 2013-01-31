@@ -69,6 +69,11 @@ namespace Test
         {
             NumTest(1, 4);
         }
+        [TestMethod()]
+        public void CellTest1_5()
+        {
+            NumTest(1, 5);
+        }
 
         [TestMethod()]
         public void CellTest2()
@@ -78,11 +83,24 @@ namespace Test
         }
 
         [TestMethod()]
+        public void CellTest2_3()
+        {
+            NumTest(2, 3);
+        }
+
+
+        [TestMethod()]
         public void CellTest3()
         {
             NumTest(3);
             NumTest(3,2);
             NumTest(3,3);
+        }
+
+        [TestMethod()]
+        public void CellTest3_4()
+        {
+            NumTest(3, 4);
         }
 
         [TestMethod()]
